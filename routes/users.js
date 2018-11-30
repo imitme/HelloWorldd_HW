@@ -170,6 +170,20 @@ router.get('/addscore/:score', util.isLogined, function(req, res, next){
 router.get('/score', util.isLogined, function(req, res, next){
   var database = req.app.get("database");
   var users = database.collection('users');
+
+  var username = req.session.username;
+
+  users.findOne( {username : username}, function(err, result) {
+    if (err) throw err;
+
+    var resultObj = {
+      id : result._id.toString(),
+      score: result.score
+    };
+    res.json(resultObj);
+  });
 });
+
+
 
 module.exports = router;

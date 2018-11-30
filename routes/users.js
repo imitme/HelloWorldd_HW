@@ -1,6 +1,6 @@
 var express = require('express');
 var util = require('../util');
-var  ObjectID = require('mongodb');
+const {ObjectID}  = require('mongodb');
 var router = express.Router();
 
 
@@ -37,6 +37,7 @@ router.post('/signin', function(req, res, next) {
       if(result){
         if (password === result.password){
           req.session.isAuthenticated = true;
+          req.session.userid = result._id.toString();
           req.session.username = result.username;
           req.session.nickname = result.nickname;
           
@@ -145,13 +146,12 @@ router.get('/addscore/:score', util.isLogined, function(req, res, next){
   var users = database.collection('users');
 
   var score = req.params.score;
-  var username = req.session.username;
+  var userid = req.session.userid;   //var username = req.session.username;
 
-  if(username != undefined)
+  if(userid != undefined)
   {
-    result = users.update( 
-      {username : username},
-      //{ _id : ObjectID(userid)},
+    result = users.updateOne( 
+      { _id : ObjectID(userid) },   //{username : username},
       { $set: {score: Number(score) , updateAt: Date.now()} }, 
       { upsert: true},
       function(err) 
@@ -171,9 +171,9 @@ router.get('/score', util.isLogined, function(req, res, next){
   var database = req.app.get("database");
   var users = database.collection('users');
 
-  var username = req.session.username;
+  var userid = req.session.userid;  //var username = req.session.username;
 
-  users.findOne( {username : username}, function(err, result) {
+  users.findOne( {_id : ObjectID(userid)}, function(err, result) {
     if (err) throw err;
 
     var resultObj = {
@@ -183,7 +183,6 @@ router.get('/score', util.isLogined, function(req, res, next){
     res.json(resultObj);
   });
 });
-
 
 
 module.exports = router;

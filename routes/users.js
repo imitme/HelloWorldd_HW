@@ -1,4 +1,5 @@
 var express = require('express');
+var util = require('../util');
 var router = express.Router();
 
 
@@ -14,19 +15,12 @@ router.get('/', function(req, res, next) {
 });
 
 //userInfo
-router.get('/info', function(req,res,next)
+router.get('/info', util.isLogined, function(req,res,next)
 {
-  if(req.session.isAuthenticated){
-    res.json({
-      username: req.session.username,
-      nickname: req.session.nickname
-    });
-  }else{
-    res.json({
-      username : "",
-      nickname : ""
-    });
-  }  
+  res.json({
+    username: req.session.username,
+    nickname: req.session.nickname
+  });
 });
 
 // 로그인
@@ -55,14 +49,6 @@ router.post('/signin', function(req, res, next) {
     });
   }
 });
-
-
-
-
-
-
-
-
 
 
 //Nickname 보내기2
@@ -118,7 +104,6 @@ router.post('/SendNickname', function(req, res, next) {
 
 
 
-
 //사용자 등록
 router.post('/add', function(req, res, next){
   
@@ -151,6 +136,18 @@ router.post('/add', function(req, res, next){
                  });
  }
  */
+});
+
+//score 추가
+router.post('/addScore/:score', function(req,res,next){
+
+
+});
+
+//score 불러오기
+router.get('/Score', function(req,res,next){
+
+
 });
 
 module.exports = router;

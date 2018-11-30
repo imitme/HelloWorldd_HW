@@ -1,5 +1,6 @@
 var express = require('express');
 var util = require('../util');
+var  ObjectID = require('mongodb');
 var router = express.Router();
 
 
@@ -139,15 +140,36 @@ router.post('/add', function(req, res, next){
 });
 
 //score 추가
-router.post('/addScore/:score', function(req,res,next){
+router.get('/addscore/:score', util.isLogined, function(req, res, next){
+  var database = req.app.get("database");
+  var users = database.collection('users');
 
+  var score = req.params.score;
+  var username = req.session.username;
 
+  if(username != undefined)
+  {
+    result = users.update( 
+      {username : username},
+      //{ _id : ObjectID(userid)},
+      { $set: {score: Number(score) , updateAt: Date.now()} }, 
+      { upsert: true},
+      function(err) 
+      {
+        if(err)
+        {
+          res.status(200).send("failure");
+        }
+        res.status(200).send("success");
+      }
+    ); 
+  }
 });
 
 //score 불러오기
-router.get('/Score', function(req,res,next){
-
-
+router.get('/score', util.isLogined, function(req, res, next){
+  var database = req.app.get("database");
+  var users = database.collection('users');
 });
 
 module.exports = router;

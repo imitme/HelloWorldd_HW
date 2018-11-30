@@ -9,6 +9,9 @@
 *.userosscache
 *.sln.docstates
 
+#sessions 폴더 제외
+sessions/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

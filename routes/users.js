@@ -132,18 +132,7 @@ router.post('/add', function(req, res, next){
                     res.status(200).send("success");
                   });
   }
-/*
-  if(username !== undefined && password !== undefined && 
-    nickname !== undefined && score !== undefined){
-                 users.insert([ {"username" : username, 
-                 "password" : password, 
-                 "nickname" : nickname,  
-                 "score" : score} ], 
-                 function(err, result){
-                   res.status(200).send("success");
-                 });
- }
- */
+
 });
 
 //score 추가

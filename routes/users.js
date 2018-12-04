@@ -55,8 +55,8 @@ router.post('/signin', function(req, res, next) {
   }
 });
 
-
-//Nickname 보내기2
+  
+//Nickname 보내기2  
 router.post('/SendNickname', function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
